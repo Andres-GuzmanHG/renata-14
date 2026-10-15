@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Los 14 de Renata</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chewy&family=Baloo+2:wght@500;700;800&family=Gochi+Hand&display=swap">
+<style>
+/* Layout: una sola pantalla tipo "app de stickers"; cada etapa es una tarjeta que aparece en secuencia (regalo → pastel → moda → sushi → fotos → carta). */
+:root{
+  --uva:#2a1640;        /* morado muy oscuro (fondo) */
+  --lila:#b892ff;       /* morado kawaii */
+  --lila-claro:#e6d8ff;
+  --rosa:#ff7eb6;       /* rosa chicle */
+  --crema:#fff4fa;      /* papel / polaroid */
+  --catarina:#e8384f;   /* rojo Ladybug */
+  --tinta:#2a1640;
+  --display:"Chewy","Baloo 2","Comic Sans MS",system-ui,sans-serif;
+  --body:"Baloo 2",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mano:"Gochi Hand","Baloo 2","Comic Sans MS",cursive;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{
+  background:var(--uva);
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(184,146,255,.35), transparent 40%),
+    radial-gradient(circle at 85% 90%, rgba(255,126,182,.28), transparent 45%);
+  color:var(--crema);font-family:var(--body);font-size:16px;overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:50}
+.floaters{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.floaters span{position:absolute;bottom:-40px;font-size:22px;opacity:.55;animation:sube linear infinite}
+@keyframes sube{to{transform:translateY(-115vh) rotate(360deg)}}
+
+.app{position:relative;z-index:1;height:100%;max-width:480px;margin:0 auto;padding-inline:16px;
+  display:flex;flex-direction:column;box-sizing:border-box}
+.top{display:flex;align-items:center;justify-content:space-between;padding-block:12px 4px;gap:12px}
+.dots{display:flex;gap:6px}
+.dots i{width:10px;height:10px;border-radius:50%;background:rgba(230,216,255,.25);transition:.3s}
+.dots i.on{background:var(--rosa);transform:scale(1.25)}
+.dots i.done{background:var(--lila)}
+.mute{border:0;background:rgba(230,216,255,.15);color:var(--crema);font-size:18px;width:40px;height:40px;border-radius:50%;cursor:pointer}
+.mute:focus-visible,.btn:focus-visible{outline:3px solid var(--rosa);outline-offset:3px}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;
+  padding-block:8px 24px;min-height:0;animation:entra .5s cubic-bezier(.2,1.4,.4,1)}
+@keyframes entra{from{transform:scale(.85) translateY(20px);opacity:.3}}
+h1,h2{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;line-height:1.05;letter-spacing:.5px}
+h1{font-size:clamp(38px,11vw,54px);color:var(--rosa);text-shadow:3px 3px 0 var(--uva),5px 5px 0 var(--lila)}
+h2{font-size:clamp(28px,8vw,38px);color:var(--lila-claro)}
+.sub{margin:0;font-size:17px;max-width:34ch;color:var(--lila-claro);line-height:1.35}
+.tag{font-family:var(--mano);font-size:20px;color:var(--rosa);margin:0}
+.btn{font-family:var(--display);font-size:22px;border:0;border-radius:999px;padding:12px 26px;cursor:pointer;
+  background:var(--rosa);color:var(--uva);box-shadow:0 5px 0 #c4407e;transition:transform .1s}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #c4407e}
+.btn.alt{background:var(--lila);box-shadow:0 5px 0 #7d55cc}
+.row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+
+/* ---------- Regalo ---------- */
+.gift{position:relative;width:200px;height:200px;cursor:pointer;border:0;background:none;padding:0;margin-top:20px}
+.gift .box{position:absolute;bottom:0;left:15px;width:170px;height:130px;background:var(--lila);border-radius:14px;
+  background-image:radial-gradient(var(--lila-claro) 18%, transparent 20%);background-size:28px 28px}
+.gift .lid{position:absolute;bottom:122px;left:5px;width:190px;height:42px;background:var(--rosa);border-radius:12px;transition:transform .5s}
+.gift .rib{position:absolute;left:50%;transform:translateX(-50%);width:26px;background:var(--catarina);bottom:0;height:164px;border-radius:4px}
+.gift .bow{position:absolute;bottom:160px;left:50%;transform:translateX(-50%);font-size:58px;line-height:1}
+.gift.shake{animation:sacude .4s}
+@keyframes sacude{20%{transform:rotate(-9deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
+.gift.open .lid,.gift.open .bow{transform:translate(-50%,-140px) rotate(-25deg);opacity:0;transition:.6s}
+.gift.open .lid{transform:translateY(-140px) rotate(-25deg)}
+.para{font-family:var(--mano);font-size:22px;line-height:1.3;margin:0;color:var(--crema)}
+.para b{color:var(--rosa);font-weight:400}
+
+/* ---------- Pastel ---------- */
+.cake-wrap{position:relative;width:min(320px,100%);touch-action:none;user-select:none}
+.candles{position:relative;margin:0 auto -4px;width:136px;display:flex;flex-wrap:wrap;justify-content:center;gap:26px 8px;padding-top:26px}
+.candle{position:relative;width:12px;height:44px;border-radius:4px;
+  background:repeating-linear-gradient(135deg,var(--crema) 0 5px,var(--rosa) 5px 10px)}
+.candles .candle:nth-child(odd){background:repeating-linear-gradient(135deg,var(--crema) 0 5px,var(--lila) 5px 10px)}
+
+.flame{position:absolute;left:50%;top:-22px;width:14px;height:22px;margin-left:-7px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+  background:radial-gradient(circle at 50% 70%,#fff7b0,#ffb627 55%,#ff6a3d);box-shadow:0 0 14px 4px rgba(255,190,80,.6);
+  animation:llama .25s ease-in-out infinite alternate;transform-origin:50% 100%}
+@keyframes llama{to{transform:scale(1.08,.92) rotate(3deg)}}
+.candle.out .flame{animation:none;transform:scale(0);opacity:0;transition:.25s}
+.candle .smoke{position:absolute;left:50%;top:-20px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:rgba(230,216,255,.7);opacity:0}
+.candle.out .smoke{animation:humo 1.2s ease-out}
+@keyframes humo{0%{opacity:.8}100%{opacity:0;transform:translate(6px,-40px) scale(3)}}
+.cake{position:relative;margin:0 auto}
+.tier{margin:0 auto;border-radius:16px 16px 10px 10px;position:relative}
+.tier.t1{width:78%;height:70px;background:var(--rosa)}
+.tier.t2{width:100%;height:90px;background:var(--lila);margin-top:-6px}
+.tier::before{content:"";position:absolute;left:0;right:0;top:0;height:22px;border-radius:16px 16px 0 0;
+  background:radial-gradient(circle at 12px 14px,var(--crema) 11px,transparent 12px) 0 0/24px 24px repeat-x,linear-gradient(var(--crema),var(--crema)) 0 0/100% 10px no-repeat}
+.tier .dec{position:absolute;inset:26px 0 0;display:flex;justify-content:space-around;align-items:center;font-size:22px}
+.plate{width:110%;margin-left:-5%;height:14px;background:var(--lila-claro);border-radius:50%;margin-top:-4px}
+.big15{font-family:var(--display);font-size:42px;color:var(--uva);position:absolute;inset:22px 0 0;display:flex;align-items:center;justify-content:center}
+.hint{font-size:14px;color:var(--lila-claro);opacity:.85;margin:0}
+
+/* ---------- Moda ---------- */
+.mirror{width:150px;height:190px;border-radius:50% 50% 46% 46%;border:8px solid var(--rosa);background:linear-gradient(160deg,var(--lila-claro),var(--lila));
+  display:flex;align-items:center;justify-content:center;font-size:72px;box-shadow:0 0 0 6px var(--lila) inset;
+  position:relative;overflow:hidden;box-sizing:border-box;width:170px;height:220px;max-width:100%}
+.mirror img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.stamp{position:absolute;left:50%;top:50%;width:150px;margin:-34px 0 0 -75px;padding:6px 4px;box-sizing:border-box;
+  border:4px solid var(--catarina);border-radius:10px;background:rgba(255,244,250,.88);color:var(--catarina);
+  font-family:var(--display);font-size:24px;line-height:1;transform:rotate(-14deg);animation:sello .45s cubic-bezier(.3,1.6,.5,1) .3s backwards}
+.stamp small{display:block;font-family:var(--body);font-weight:800;font-size:11px;letter-spacing:1px;margin-top:3px}
+@keyframes sello{from{transform:rotate(-14deg) scale(3);opacity:0}}
+.zone{position:relative;width:100%;height:120px}
+.zone .btn{position:absolute;top:30px;transition:left .25s,top .25s}
+
+/* ---------- Sushi ---------- */
+.score{font-family:var(--display);font-size:26px;color:var(--rosa)}
+.field{position:relative;width:100%;flex:1;min-height:300px;max-height:440px;border-radius:24px;overflow:hidden;
+  background:rgba(230,216,255,.08);border:3px dashed rgba(230,216,255,.3);touch-action:manipulation}
+.fall{position:absolute;top:-60px;font-size:44px;border:0;background:none;padding:6px;cursor:pointer;animation:cae linear forwards;line-height:1}
+@keyframes cae{to{transform:translateY(520px) rotate(200deg)}}
+.pop{position:absolute;font-family:var(--display);color:var(--rosa);font-size:24px;pointer-events:none;animation:popup .7s forwards}
+@keyframes popup{to{transform:translateY(-40px);opacity:0}}
+.coupon{background:var(--crema);color:var(--tinta);border-radius:18px;padding:16px 20px;border:3px dashed var(--catarina);max-width:300px;transform:rotate(-2deg)}
+.coupon h2{color:var(--catarina);font-size:30px}
+.coupon p{margin:6px 0 0;font-size:15px}
+
+/* ---------- Fotos ---------- */
+.stack{position:relative;width:min(300px,82vw);aspect-ratio:3/3.7;max-width:100%}
+.pol{position:absolute;inset:0;background:var(--crema);padding:12px 12px 0;border-radius:6px;box-shadow:0 10px 24px rgba(0,0,0,.4);
+  display:flex;flex-direction:column;cursor:grab;touch-action:none;transition:transform .45s cubic-bezier(.3,1.3,.5,1),opacity .45s}
+.pol img{width:100%;flex:1;min-height:0;object-fit:cover;object-position:center 30%;border-radius:2px;pointer-events:none;background:var(--lila-claro)}
+.pol p{font-family:var(--mano);color:var(--tinta);font-size:19px;margin:0;padding:8px 2px 12px;line-height:1.15;min-height:2.3em;display:flex;align-items:center;justify-content:center}
+.pol .tape{position:absolute;top:-12px;left:50%;width:80px;height:24px;margin-left:-40px;background:rgba(255,126,182,.65);transform:rotate(-4deg)}
+.pol.gone{opacity:0;pointer-events:none}
+.count{font-family:var(--display);color:var(--lila-claro);font-size:18px}
+
+/* ---------- Carta ---------- */
+.env{position:relative;width:240px;height:160px;border:0;padding:0;background:var(--rosa);border-radius:10px;cursor:pointer;overflow:visible}
+.env::before{content:"";position:absolute;inset:0;background:linear-gradient(to top right,transparent 49.5%,#f06aa6 50%) left/50% 100% no-repeat,linear-gradient(to top left,transparent 49.5%,#f06aa6 50%) right/50% 100% no-repeat;border-radius:10px}
+.env .flap{position:absolute;left:0;right:0;top:0;height:95px;background:#ff94c3;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .6s}
+.env .seal{position:absolute;left:50%;top:70px;width:46px;height:46px;margin-left:-23px;border-radius:50%;background:var(--catarina);
+  background-image:radial-gradient(var(--uva) 22%,transparent 24%);background-size:16px 16px;background-position:4px 4px;
+  box-shadow:0 0 0 3px var(--crema)}
+.env.open .flap{transform:rotateX(180deg)}
+.env.open .seal{opacity:0;transition:.3s}
+.letter{background:var(--crema);color:var(--tinta);border-radius:14px;padding:20px 20px 24px;text-align:left;width:100%;box-sizing:border-box;
+  max-height:100%;overflow-y:auto;font-family:var(--mano);font-size:20px;line-height:1.4;
+  background-image:repeating-linear-gradient(transparent 0 27px,rgba(184,146,255,.35) 27px 28px);background-position:0 18px;
+  box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.letter p{margin:0 0 12px;white-space:pre-wrap}
+.letter .firma{color:var(--catarina);font-size:26px;text-align:right}
+.cursor{display:inline-block;width:2px;height:1em;background:var(--rosa);vertical-align:-2px;animation:parpadea .7s steps(1) infinite}
+@keyframes parpadea{50%{opacity:0}}
+.stage.cartastage{justify-content:flex-start}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div class="floaters" id="floaters" aria-hidden="true"></div>
+
+<div class="app">
+  <div class="top">
+    <div class="dots" id="dots" aria-hidden="true"></div>
+    <button class="mute" id="mute" aria-label="Silenciar música">🔊</button>
+  </div>
+  <main id="main"></main>
+</div>
+
+<script>
+/* ================= Música (cajita musical hecha con Web Audio) ================= */
+const Music = (() => {
+  let ctx, master, muted = false, bgOn = false, bgTimer, nextT = 0, step = 0;
+  const N = n => 440 * Math.pow(2, (n - 69) / 12);
+  function init(){
+    if (ctx) { ctx.resume(); return; }
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    master = ctx.createGain(); master.gain.value = .5; master.connect(ctx.destination);
+  }
+  function note(midi, t, dur, vol = .2, type = "sine"){
+    if (!ctx) return;
+    const o = ctx.createOscillator(), o2 = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type; o.frequency.value = N(midi);
+    o2.type = "triangle"; o2.frequency.value = N(midi) * 2;
+    const g2 = ctx.createGain(); g2.gain.value = .25;
+    o.connect(g); o2.connect(g2); g2.connect(g); g.connect(master);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .01);
+    g.gain.exponentialRampToValueAtTime(.0008, t + dur + .6);
+    o.start(t); o2.start(t); o.stop(t + dur + .7); o2.stop(t + dur + .7);
+  }
+  // Canción de fondo original: C – G – Am – F, melodía alegre tipo cajita
+  const chords = [[48,52,55],[43,47,50],[45,48,52],[41,45,48]];
+  const mel = [
+    [76,null,79,81, 79,null,76,74],[74,null,79,null, 83,81,79,null],
+    [72,null,76,81, 79,null,76,null],[77,76,74,72, 74,null,null,null],
+    [76,79,84,null, 83,81,79,null],[74,null,79,null, 81,83,86,null],
+    [84,null,81,79, 76,null,79,81],[77,null,76,74, 72,null,null,null]];
+  const E = 60/104/2; // corcheas
+  function sched(){
+    while (nextT < ctx.currentTime + .3){
+      const bar = Math.floor(step/8) % 8, s = step % 8, ch = chords[bar % 4];
+      if (s % 2 === 0) note(ch[(s/2) % 3] + 12, nextT, E*1.5, .07, "triangle");
+      if (s === 0) note(ch[0] - 12 + 12, nextT, E*7, .09, "sine");
+      const m = mel[bar][s]; if (m) note(m, nextT, E*1.6, .12);
+      nextT += E; step++;
+    }
+  }
+  function startBg(){
+    init(); if (bgOn) return; bgOn = true; nextT = ctx.currentTime + .1;
+    bgTimer = setInterval(sched, 80);
+  }
+  function stopBg(){ bgOn = false; clearInterval(bgTimer); }
+  function birthday(done){
+    init(); stopBg();
+    const B = .42, t0 = ctx.currentTime + .2;
+    const seq = [[67,.75],[67,.25],[69,1],[67,1],[72,1],[71,2],
+                 [67,.75],[67,.25],[69,1],[67,1],[74,1],[72,2],
+                 [67,.75],[67,.25],[79,1],[76,1],[72,1],[71,1],[69,2],
+                 [77,.75],[77,.25],[76,1],[72,1],[74,1],[72,3]];
+    let t = t0;
+    seq.forEach(([n,d]) => { note(n+12, t, d*B, .16); note(n, t, d*B, .08, "triangle"); t += d*B; });
+    setTimeout(() => { startBg(); done && done(); }, (t - ctx.currentTime) * 1000 + 300);
+  }
+  function blip(n = 84){ init(); note(n, ctx.currentTime, .08, .12); }
+  function toggle(){
+    init(); muted = !muted;
+    master.gain.setTargetAtTime(muted ? 0 : .5, ctx.currentTime, .05);
+    return muted;
+  }
+  return { startBg, birthday, blip, toggle };
+})();
+
+/* ================= Confeti ================= */
+const FX = (() => {
+  const cv = document.getElementById("fx"), c = cv.getContext("2d");
+  let parts = [], run = false;
+  const cols = ["#ff7eb6","#b892ff","#e6d8ff","#e8384f","#fff4fa","#ffd166"];
+  function size(){ cv.width = innerWidth * devicePixelRatio; cv.height = innerHeight * devicePixelRatio; c.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0); }
+  addEventListener("resize", size); size();
+  function burst(x = innerWidth/2, y = innerHeight/2, n = 120){
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) n = 20;
+    for (let i = 0; i < n; i++){
+      const a = Math.random()*Math.PI*2, v = 4 + Math.random()*9;
+      parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-5,r:Math.random()*6+4,c:cols[i%cols.length],
+        rot:Math.random()*6,vr:(Math.random()-.5)*.4,shape:i%4,life:140+Math.random()*60});
+    }
+    if (!run){ run = true; requestAnimationFrame(tick); }
+  }
+  function rain(){ for (let i = 0; i < 5; i++) setTimeout(() => burst(Math.random()*innerWidth, -20, 50), i*300); }
+  function tick(){
+    c.clearRect(0,0,innerWidth,innerHeight);
+    parts = parts.filter(p => p.life-- > 0 && p.y < innerHeight + 30);
+    for (const p of parts){
+      p.vy += .22; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      c.save(); c.translate(p.x,p.y); c.rotate(p.rot); c.fillStyle = p.c;
+      if (p.shape === 0){ c.beginPath(); c.arc(0,0,p.r/1.6,0,7); c.fill(); }
+      else if (p.shape === 1){ heart(p.r); }
+      else c.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);
+      c.restore();
+    }
+    if (parts.length) requestAnimationFrame(tick); else { run = false; c.clearRect(0,0,innerWidth,innerHeight); }
+  }
+  function heart(r){ c.beginPath(); c.moveTo(0,r/3); c.bezierCurveTo(r,-r/2,r/2,-r*1.1,0,-r/3); c.bezierCurveTo(-r/2,-r*1.1,-r,-r/2,0,r/3); c.fill(); }
+  return { burst, rain };
+})();
+
+/* Decoración flotante */
+(() => {
+  const f = document.getElementById("floaters"), items = ["💜","⭐","🐞","🍣","🎀","✨","💖","🖤"];
+  for (let i = 0; i < 16; i++){
+    const s = document.createElement("span");
+    s.textContent = items[i % items.length];
+    s.style.left = (Math.random()*100) + "%";
+    s.style.animationDuration = (12 + Math.random()*14) + "s";
+    s.style.animationDelay = (-Math.random()*20) + "s";
+    s.style.fontSize = (14 + Math.random()*16) + "px";
+    f.appendChild(s);
+  }
+})();
+
+/* ================= Etapas ================= */
+const main = document.getElementById("main"), dots = document.getElementById("dots");
+const stages = [gift, cake, moda, sushi, fotos, carta];
+let cur = 0;
+stages.forEach(() => dots.appendChild(document.createElement("i")));
+function go(i){
+  cur = i;
+  [...dots.children].forEach((d,k) => d.className = k < i ? "done" : k === i ? "on" : "");
+  main.innerHTML = ""; const sec = document.createElement("section"); sec.className = "stage";
+  main.appendChild(sec); main.style.cssText = "flex:1;display:flex;min-height:0";
+  sec.style.width = "100%";
+  stages[i](sec);
+}
+const next = () => { Music.blip(88); go(cur + 1); };
+const h = (html) => { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstChild; };
+
+document.getElementById("mute").onclick = e => { e.currentTarget.textContent = Music.toggle() ? "🔇" : "🔊"; };
+
+/* 1. Regalo */
+function gift(s){
+  s.innerHTML = `
+    <p class="tag">¡Ding dong! llegó un paquete ✨</p>
+    <p class="para">Para: <b>Renata Azucena Gómez Guzmán</b><br>De: <b>Andy</b> (tu hermano favorito)</p>
+    <button class="gift" id="g" aria-label="Abrir el regalo">
+      <span class="box"></span><span class="rib"></span><span class="lid"></span><span class="bow">🎀</span>
+    </button>
+    <p class="hint" id="gh">Toca el regalo 3 veces para abrirlo</p>`;
+  let taps = 0; const g = s.querySelector("#g"), gh = s.querySelector("#gh");
+  g.onclick = () => {
+    Music.startBg(); taps++;
+    g.classList.remove("shake"); void g.offsetWidth; g.classList.add("shake");
+    Music.blip(76 + taps*4);
+    gh.textContent = ["", "¡Otra vez! 👀", "¡Una más! ¡ya casi!"][taps] || "";
+    if (taps >= 3){
+      g.classList.add("open"); const r = g.getBoundingClientRect();
+      FX.burst(r.left + r.width/2, r.top + r.height/3, 160);
+      setTimeout(next, 1100);
+    }
+  };
+}
+
+/* 2. Pastel con 14 velas */
+function cake(s){
+  s.innerHTML = `
+    <h2>Pide un deseo 🌠</h2>
+    <p class="sub">Y sopla tus 14 velitas: <b>desliza el dedo</b> sobre ellas o usa el botón de soplar.</p>
+    <div class="cake-wrap" id="cw">
+      <div class="candles" id="cs"></div>
+      <div class="cake">
+        <div class="tier t1"><div class="dec"><span>🐞</span><span>🍣</span><span>💜</span><span>🎀</span></div></div>
+        <div class="tier t2"><div class="big15">14</div></div>
+        <div class="plate"></div>
+      </div>
+    </div>
+    <p class="hint" id="left">Quedan 14 velitas encendidas</p>
+    <button class="btn" id="blow">Soplar 🌬️</button>`;
+  const cs = s.querySelector("#cs"), left = s.querySelector("#left"), cw = s.querySelector("#cw");
+  for (let i = 0; i < 14; i++) cs.appendChild(h(`<div class="candle"><div class="flame"></div><div class="smoke"></div></div>`));
+  let on = 14, finished = false;
+  function out(c){
+    if (!c || c.classList.contains("out") || finished) return;
+    c.classList.add("out"); on--; Music.blip(72 + (14 - on));
+    left.textContent = on ? `Quedan ${on} velitas encendidas` : "¡Lo lograste! 🎉";
+    if (on === 0) win();
+  }
+  function hit(x, y){ const el = document.elementFromPoint(x, y); out(el && el.closest && el.closest(".candle")); }
+  let down = false;
+  cw.addEventListener("pointerdown", e => { down = true; Music.startBg(); hit(e.clientX, e.clientY); });
+  addEventListener("pointerup", () => down = false);
+  cw.addEventListener("pointermove", e => { if (down || e.pointerType === "mouse") { hit(e.clientX, e.clientY); hit(e.clientX, e.clientY - 14); } });
+  s.querySelector("#blow").onclick = () => {
+    const lit = [...cs.querySelectorAll(".candle:not(.out)")].sort(() => Math.random() - .5);
+    lit.slice(0, 2 + Math.floor(Math.random()*3)).forEach((c,k) => setTimeout(() => out(c), k*120));
+  };
+  function win(){
+    finished = true; FX.rain();
+    s.querySelector("#blow").remove();
+    const h2 = s.querySelector("h2"); h2.outerHTML = `<h1>¡Feliz cumple 14, Renata!</h1>`;
+    s.querySelector(".sub").textContent = "Que se cumpla ese deseo (y que me invites tantito de tu pastel).";
+    Music.birthday();
+    const b = h(`<button class="btn alt">Seguir 👉</button>`); b.onclick = next;
+    setTimeout(() => s.appendChild(b), 1200);
+  }
+}
+
+/* 3. La prueba de moda (el chiste de los consejos) */
+function moda(s){
+  s.innerHTML = `
+    <p class="tag">Pregunta muy importante de tu asesorado</p>
+    <div class="mirror"><img src="img/andy.jpg" alt="Andy posando con su outfit"></div>
+    <h2>¿Me veo bien vestido hoy?</h2>
+    <p class="sub">Tú siempre me dices la verdad cuando te pido consejo… así que contesta con cuidado.</p>
+    <div class="zone" id="z">
+      <button class="btn" id="si">Sí, guapísimo 😎</button>
+      <button class="btn alt" id="no">Mmm, no 🙄</button>
+    </div>`;
+  const z = s.querySelector("#z"), si = s.querySelector("#si"), no = s.querySelector("#no");
+  const place = () => { const w = z.clientWidth; si.style.left = (w/2 - si.offsetWidth - 8) + "px"; no.style.left = (w/2 + 8) + "px"; };
+  requestAnimationFrame(place);
+  let escapes = 0;
+  const huye = e => {
+    if (no.dataset.tame) return;
+    e.preventDefault(); escapes++; Music.blip(60 + escapes*3);
+    if (escapes >= 6){ no.dataset.tame = 1; no.textContent = "Bueno… sí 😒"; return; }
+    const w = z.clientWidth - no.offsetWidth, hh = z.clientHeight - no.offsetHeight;
+    no.style.left = Math.random()*w + "px"; no.style.top = Math.random()*hh + "px";
+    no.textContent = ["¡No me atrapas!","¿Segura? 🤨","Piénsalo bien","Nop, no puedes","Último intento"][escapes-1];
+  };
+  no.addEventListener("pointerdown", huye);
+  no.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") huye(e); });
+  const yes = () => {
+    FX.burst(innerWidth/2, innerHeight/2, 90);
+    s.innerHTML = `
+      <div class="mirror"><img src="img/andy.jpg" alt="Andy con el sello de aprobado">
+        <div class="stamp">APROBADO ✔<small>POR LA ASESORA RENATA</small></div></div>
+      <h2>Outfit aprobado 💯</h2>
+      <p class="sub">Gracias por ser mi <b>asesora de moda oficial</b>. Sin tus consejos seguro saldría vestido como payaso. Tu sueldo es en sushi 🍣.</p>`;
+    const b = h(`<button class="btn">Cobrar mi sueldo 🍣</button>`); b.onclick = next; s.appendChild(b);
+  };
+  si.onclick = yes;
+  no.onclick = () => { if (no.dataset.tame) yes(); };
+}
+
+/* 4. Mini juego: atrapa 14 sushis */
+function sushi(s){
+  s.innerHTML = `
+    <h2>Atrapa 14 sushis</h2>
+    <p class="sub" style="margin-top:-6px">Uno por cada año. Toca los 🍣 y esquiva el brócoli 🥦</p>
+    <div class="score" id="sc">🍣 0 / 14</div>
+    <div class="field" id="f"></div>`;
+  const f = s.querySelector("#f"), sc = s.querySelector("#sc");
+  const good = ["🍣","🍙","🍤","🍣","🍱"], bad = ["🥦","🧅"];
+  let n = 0, done = false;
+  const spawn = () => {
+    if (done || !f.isConnected) return;
+    const isBad = Math.random() < .22, b = document.createElement("button");
+    b.className = "fall"; b.textContent = isBad ? bad[Math.random()*2|0] : good[Math.random()*good.length|0];
+    b.setAttribute("aria-label", isBad ? "verdura" : "sushi");
+    b.style.left = (Math.random() * (f.clientWidth - 60)) + "px";
+    b.style.animationDuration = (2.6 + Math.random()*1.8 - Math.min(n, 10)*.05) + "s";
+    b.addEventListener("pointerdown", e => {
+      e.preventDefault(); if (done) return;
+      const r = f.getBoundingClientRect(), p = document.createElement("div"); p.className = "pop";
+      p.style.left = (e.clientX - r.left - 15) + "px"; p.style.top = (e.clientY - r.top - 20) + "px";
+      if (isBad){ p.textContent = "¡guácala!"; Music.blip(52); f.animate([{transform:"translateX(-6px)"},{transform:"translateX(6px)"},{transform:"none"}],{duration:200}); }
+      else { n++; p.textContent = "+1"; Music.blip(76 + n); sc.textContent = `🍣 ${n} / 14`; }
+      f.appendChild(p); setTimeout(() => p.remove(), 700); b.remove();
+      if (n >= 14) win();
+    });
+    b.addEventListener("animationend", () => b.remove());
+    f.appendChild(b);
+    setTimeout(spawn, 520 + Math.random()*350);
+  };
+  spawn();
+  function win(){
+    done = true; FX.rain();
+    s.innerHTML = `
+      <h2>¡14 de 14! 🏆</h2>
+      <div class="coupon">
+        <h2>VALE POR UN SUSHI</h2>
+        <p>Válido por una salida a comer sushi con Andy, él invita. Sin fecha de caducidad. Enséñale esta pantalla para cobrarlo 😌</p>
+      </div>
+      <p class="hint">Tómale captura para que no se haga el desentendido</p>`;
+    const b = h(`<button class="btn alt">Ver recuerdos 📸</button>`); b.onclick = next; s.appendChild(b);
+  }
+}
+
+/* 5. Galería de polaroids */
+const FOTOS = [
+  ["f04.jpg","Versión 10 años: ya eras la reina de la fiesta 👑"],
+  ["f05.jpg","Tu hermano favorito (el único, pero cuenta) 😎"],
+  ["f06.jpg","Modo snorkel activado 🤿"],
+  ["f07.jpg","Pulgar arriba si sobrevivimos 👍"],
+  ["f08.jpg","Capitana Renata al mando 🚣‍♀️"],
+  ["f09.jpg","Exploradores de cuevas nivel PRO 🦇"],
+  ["f10.jpg","Corazón gigante, como el tuyo 💜"],
+  ["f11.jpg","Yo manejo, tú pones cara de susto 😂"],
+  ["f02.jpg","Sirena descansando 🧜‍♀️"],
+  ["f01.jpg","Cuando hay comida, hay felicidad 🍽️"],
+  ["f03.jpg","Y de repente… ya eres toda una señorita ✨"],
+  ["f12.jpg","Mil recuerdos y faltan muchísimos más 💖"]
+];
+function fotos(s){
+  s.innerHTML = `
+    <h2>Nuestros recuerdos</h2>
+    <div class="stack" id="st"></div>
+    <div class="count" id="ct">1 / ${FOTOS.length}</div>
+    <p class="hint" id="ht">Desliza o toca la foto para ver la siguiente</p>`;
+  const st = s.querySelector("#st"), ct = s.querySelector("#ct");
+  const cards = FOTOS.map(([src, cap], i) => {
+    const rot = (i % 2 ? 1 : -1) * (2 + Math.random()*4);
+    const c = h(`<figure class="pol" style="margin:0"><span class="tape"></span><img alt="" src="img/${src}" ${i > 2 ? 'loading="lazy"' : ""}><p></p></figure>`);
+    c.querySelector("p").textContent = cap; c.querySelector("img").alt = cap;
+    c.dataset.rot = rot; c.style.transform = `rotate(${rot}deg)`; c.style.zIndex = FOTOS.length - i;
+    st.appendChild(c); return c;
+  });
+  let idx = 0, sx = null;
+  const toss = (dir) => {
+    if (idx >= cards.length) return;
+    const c = cards[idx]; Music.blip(79 + (idx % 5) * 2);
+    c.style.transform = `translate(${dir * 420}px,-60px) rotate(${dir * 40}deg)`; c.classList.add("gone");
+    idx++;
+    if (idx < cards.length) ct.textContent = `${idx + 1} / ${cards.length}`;
+    else {
+      ct.textContent = "¡Esas fueron todas! (por ahora)";
+      s.querySelector("#ht").remove();
+      const row = h(`<div class="row"></div>`);
+      const again = h(`<button class="btn alt">Verlas otra vez</button>`);
+      const b = h(`<button class="btn">Abrir mi carta 💌</button>`);
+      again.onclick = () => go(cur); b.onclick = next;
+      row.append(again, b); s.appendChild(row); FX.burst(innerWidth/2, innerHeight/2, 80);
+    }
+  };
+  st.addEventListener("pointerdown", e => { sx = e.clientX; });
+  st.addEventListener("pointerup", e => {
+    if (sx === null) return; const dx = e.clientX - sx; sx = null;
+    toss(Math.abs(dx) > 30 ? Math.sign(dx) : (idx % 2 ? 1 : -1));
+  });
+}
+
+/* 6. La carta */
+const CARTA = [
+  "Renata:",
+  "¡Feliz cumpleaños número 14! 🎉",
+  "Nombre, ¿qué te puedo decir? Ya no eres la misma niña que yo recordaba. La verdad, ya te veo con más madurez, y ya no te veo como una niña sino como toda una adolescente. Me sorprende cómo pasa el tiempo; de verdad no perdona nada.",
+  "Todavía me acuerdo de cuando cumpliste 10 con tu vestido rosa, y de todas nuestras aventuras: las cuevas, el snorkel, el kayak y el buggy de Xplor (donde obviamente yo manejé mejor 😎).",
+  "Gracias por ser mi asesora de moda oficial y por decirme la verdad cuando te pregunto si me veo bien, aunque a veces duela 😂. Nunca dejes de ser así de sincera, divertida y auténtica.",
+  "Espero que sigamos llevándonos así de bien siempre. Pase lo que pase, aquí voy a estar para apoyarte, para cuidarte, para darte consejos (aunque no me los pidas) y para invitarte sushi de vez en cuando 🍣.",
+  "Que estos 14 sean el inicio de una etapa increíble. Tienes más poder que Ladybug y más estilo que Kuromi, y eso ya es decir mucho 🐞💜.",
+  "Te quiero mucho, hermanita."
+];
+function carta(s){
+  s.innerHTML = `
+    <h2>Tienes una carta 💌</h2>
+    <p class="sub">Escrita por Andy, con mucho cariño (y pocas faltas de ortografía)</p>
+    <button class="env" id="env" aria-label="Abrir la carta"><span class="flap"></span><span class="seal"></span></button>
+    <p class="hint">Toca el sobre para abrirlo</p>`;
+  const env = s.querySelector("#env");
+  env.onclick = () => {
+    env.classList.add("open"); Music.blip(84);
+    setTimeout(() => {
+      s.classList.add("cartastage");
+      s.innerHTML = `<div class="letter" id="lt" aria-live="polite"></div>`;
+      typeLetter(s, s.querySelector("#lt"));
+    }, 700);
+  };
+}
+function typeLetter(s, lt){
+  let pi = 0, ci = 0, skip = false, p = null;
+  const cur = document.createElement("span"); cur.className = "cursor";
+  lt.addEventListener("click", () => skip = true);
+  const tick = () => {
+    if (skip){
+      lt.innerHTML = "";
+      CARTA.forEach(t => { const q = document.createElement("p"); q.textContent = t; lt.appendChild(q); });
+      return end();
+    }
+    if (!p){ p = document.createElement("p"); lt.appendChild(p); }
+    const t = CARTA[pi];
+    p.textContent = t.slice(0, ++ci); p.appendChild(cur);
+    lt.scrollTop = lt.scrollHeight;
+    if (ci >= t.length){ pi++; ci = 0; p = null; if (pi >= CARTA.length) return end(); setTimeout(tick, 380); }
+    else setTimeout(tick, /[.,!?]/.test(t[ci-1]) ? 160 : 28);
+  };
+  tick();
+  function end(){
+    cur.remove();
+    if (lt.querySelector(".firma")) return;
+    lt.appendChild(h(`<p class="firma">— Andy 💜</p>`));
+    lt.scrollTop = lt.scrollHeight; FX.rain();
+    const row = h(`<div class="row" style="margin-top:14px"></div>`);
+    const again = h(`<button class="btn alt">Ver todo otra vez</button>`);
+    again.onclick = () => go(0);
+    row.appendChild(again); s.appendChild(row);
+  }
+}
+
+go(0);
+</script>
+</body>
+</html>
